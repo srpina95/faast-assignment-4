@@ -10,7 +10,7 @@ def load_data(file_path=CURRENT_FILEPATH / "data" / "eu_life_expectancy_raw.tsv"
     """
     This function loads a file given a file path
 
-    :param filePath: File path to the file
+    :param file_path: File path to the file
     :returns: pandas dataFrame loaded from file
     """
 
@@ -22,7 +22,7 @@ def clean_data(eu_life_expectancy_raw_wide, country="PT"):
     """
     This function  cleans and prepares the dataframe in order to be stored as required:
 
-    param: euLifeExpectancyRawWide: dataFrame loaded previously in wide form directly from file
+    param: eu_life_expectancy_raw_wide: dataFrame loaded previously in wide form directly from file
     param: country: country code to filter the data (default = PT)
 
     return: euLifeExpectancyClean: dataframe filtered and cleaned, ready to be stored
@@ -54,7 +54,7 @@ def save_data(dataframe, file_path = CURRENT_FILEPATH /"data" / "pt_life_expecta
     """
     This function saves a dataframe into a specified filepath
 
-    param: dataFrame: Dataframe to be stored
+    param: dataframe: Dataframe to be stored
     param: file_path: filepath on which to store the file
     """
 
