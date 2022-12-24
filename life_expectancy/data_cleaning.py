@@ -1,3 +1,4 @@
+"""Module with all the functions associated to the dataset cleaning process"""
 import pandas as pd
 
 
