@@ -13,8 +13,10 @@ def main(input_data_path: Path, output_data_path: Path, country: str) -> pd.Data
     """main function: ....."""
     eu_life_expectancy_raw = load_data(input_data_path)
     eu_life_expectancy_filtered = clean_data(eu_life_expectancy_raw, country=country)
-    return save_data(eu_life_expectancy_filtered, output_data_path)
+    save_data(eu_life_expectancy_filtered, output_data_path)
 
+    
+    return eu_life_expectancy_filtered
 
 if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser(description="main function for your library")
