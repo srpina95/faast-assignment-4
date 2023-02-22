@@ -1,10 +1,11 @@
-"""import of libraries"""
+# pylint: disable=locally-disabled, multiple-statements, W0621
+"""Main file of the loading, cleaning and saving process"""
 from pathlib import Path
 import argparse
 import pandas as pd
 
-from .data_cleaning import clean_data
 from life_expectancy.loading_saving import save_data, load_data
+from .data_cleaning import clean_data
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
