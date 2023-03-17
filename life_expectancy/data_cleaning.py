@@ -2,7 +2,7 @@
 import pandas as pd
 
 
-def clean_data(df_raw_wide: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
+def clean_data_csv(df_raw_wide: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
     """
     This function  cleans and prepares the dataframe in order to be stored as required:
 
@@ -24,6 +24,34 @@ def clean_data(df_raw_wide: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
 
     df_clean["value"] = df_clean["value"].str.extract(r"(\d+.\d+)")
     df_clean.rename(columns={"geo\\time": "region"}, inplace=True)
+
+    df_clean["value"] = df_clean["value"].astype("float")
+    df_clean["year"] = df_clean["year"].astype("int")
+
+    df_clean.dropna(axis=0, inplace=True)
+
+    df_clean = df_clean[df_clean["region"] == country]
+
+    df_clean.reset_index(inplace=True, drop=True)
+
+    return df_clean
+
+def clean_data_json(df_raw: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
+    """
+    This function  cleans and prepares the dataframe in order to be stored as required:
+
+    param: df_raw_wide: dataFrame loaded previously in wide form directly from file
+    param: country: country code to filter the data (default = PT)
+
+    return: dataframe filtered and cleaned, ready to be stored
+    """
+
+
+    df_clean = df_raw[["unit", "sex", "age", "country", "year", "life_expectancy"]]
+
+    df_clean.rename(columns={"country": "region"}, inplace=True)
+    df_clean.rename(columns={"life_expectancy": "value"}, inplace=True)
+
 
     df_clean["value"] = df_clean["value"].astype("float")
     df_clean["year"] = df_clean["year"].astype("int")

@@ -1,11 +1,14 @@
 """Module with the functions associated to saving and loading the dataframes from a given path"""
 from pathlib import Path
+import os
+import zipfile
 import pandas as pd
+
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
 
-def load_data(file_path: Path) -> pd.DataFrame:
+def load_data(file_path: Path):
     """
     This function loads a file given a file path
 
@@ -13,9 +16,18 @@ def load_data(file_path: Path) -> pd.DataFrame:
     :returns: pandas dataFrame loaded from file
     """
 
-    loaded_dataframe = pd.read_csv(file_path, sep="\t")
+    filetype = str(file_path).rsplit('.', maxsplit=1)[-1]
+    if filetype == "zip":
+        file_path, filetype = unzipper(file_path)
 
-    return loaded_dataframe
+    if filetype in("csv", "tsv"):
+        loaded_dataframe = pd.read_csv(file_path, sep="\t")
+    elif filetype == "json":
+        # with open(file_path) as f:
+        #     loaded_dataframe = json.load(f)
+        loaded_dataframe = pd.read_json(file_path)
+
+    return loaded_dataframe, filetype
 
 
 def save_data(dataframe: pd.DataFrame, file_path: Path) -> pd.DataFrame:
@@ -29,3 +41,23 @@ def save_data(dataframe: pd.DataFrame, file_path: Path) -> pd.DataFrame:
     dataframe.to_csv(file_path, index=False)
 
     return dataframe
+
+
+
+def unzipper(file_path: Path):
+    """
+    This function unzips the zip file with the input data if it exists
+
+    param: file_path: Path to the zip file
+
+    output: file_path:  filepath of the file unzipped
+    output: filetype:   filetype of the unziped file
+    """
+
+    with zipfile.ZipFile(file_path, 'r') as zip_file:
+        filename = zip_file.namelist()[0]
+        zip_file.extract(filename, os.path.split(os.path.abspath(file_path))[0])
+    file_path = os.path.split(os.path.abspath(file_path))[0]+ "/" + filename
+    filetype = file_path.split(".")[-1]
+
+    return file_path, filetype

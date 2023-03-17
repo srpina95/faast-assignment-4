@@ -24,6 +24,11 @@ def pt_life_expectancy_expected() -> pd.DataFrame:
 
 
 @pytest.fixture(scope="session")
-def input_dataframe_test() -> pd.DataFrame:
-    """Fixture to load the expected output of the cleaning script"""
+def input_dataframe_test_csv() -> pd.DataFrame:
+    """Fixture to load the input of the cleaning script for a csv file"""
     return pd.read_csv(FIXTURES_DIR / "eu_life_expectancy_raw_testing.tsv", sep="\t")
+
+@pytest.fixture(scope="session")
+def input_dataframe_test_json() -> pd.DataFrame:
+    """Fixture to load the input of the cleaning script for a json file"""
+    return pd.read_json(FIXTURES_DIR / "eurostat_life_expect.json")
