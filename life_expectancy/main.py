@@ -13,15 +13,14 @@ from life_expectancy.country import Country
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
 
-def main(input_data_path: Path, output_data_path: Path, country: str) -> pd.DataFrame:
+def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"]) -> pd.DataFrame:
     """main function: ....."""
-    eu_life_expectancy_raw, filetype = load_data(input_data_path)
-    country = Country[country.upper()].value
+    life_expectancy_raw, filetype = load_data(input_data_path)
     if filetype in ("csv", "tsv"):
-        eu_life_expectancy_filtered = clean_data_csv(eu_life_expectancy_raw, country=country)
+        life_expectancy_filtered = clean_data_csv(life_expectancy_raw, country=country.value)
     elif filetype == "json":
-        eu_life_expectancy_filtered = clean_data_json(eu_life_expectancy_raw, country=country)
-    return save_data(eu_life_expectancy_filtered, output_data_path)
+        life_expectancy_filtered = clean_data_json(life_expectancy_raw, country=country.value)
+    return save_data(life_expectancy_filtered, output_data_path)
 
 
 if __name__ == "__main__":  # pragma: no cover
@@ -53,4 +52,4 @@ if __name__ == "__main__":  # pragma: no cover
     output_data_path = CURRENT_FILEPATH / "data" / args.output_file_name
 
     #main(input_data_path, output_data_path, args.country)
-    main("life_expectancy/data/eurostat_life_expect.zip", output_data_path, args.country)
+    main("life_expectancy/data/eurostat_life_expect.zip", output_data_path, Country[args.country])

@@ -2,12 +2,12 @@
 import pandas as pd
 
 
-def clean_data_csv(df_raw_wide: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
+def clean_data_csv(df_raw_wide: pd.DataFrame, country: str) -> pd.DataFrame:
     """
     This function  cleans and prepares the dataframe in order to be stored as required:
 
     param: df_raw_wide: dataFrame loaded previously in wide form directly from file
-    param: country: country code to filter the data (default = PT)
+    param: country: country code to filter the data
 
     return: dataframe filtered and cleaned, ready to be stored
     """
@@ -36,12 +36,12 @@ def clean_data_csv(df_raw_wide: pd.DataFrame, country: str = "PT") -> pd.DataFra
 
     return df_clean
 
-def clean_data_json(df_raw: pd.DataFrame, country: str = "PT") -> pd.DataFrame:
+def clean_data_json(df_raw: pd.DataFrame, country: str) -> pd.DataFrame:
     """
     This function  cleans and prepares the dataframe in order to be stored as required:
 
     param: df_raw_wide: dataFrame loaded previously in wide form directly from file
-    param: country: country code to filter the data (default = PT)
+    param: country: country code to filter the data
 
     return: dataframe filtered and cleaned, ready to be stored
     """

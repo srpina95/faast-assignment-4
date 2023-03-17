@@ -23,8 +23,6 @@ def load_data(file_path: Path):
     if filetype in("csv", "tsv"):
         loaded_dataframe = pd.read_csv(file_path, sep="\t")
     elif filetype == "json":
-        # with open(file_path) as f:
-        #     loaded_dataframe = json.load(f)
         loaded_dataframe = pd.read_json(file_path)
 
     return loaded_dataframe, filetype
