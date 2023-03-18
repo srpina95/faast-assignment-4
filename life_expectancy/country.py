@@ -59,6 +59,3 @@ class Country(str, Enum):
     UA = "UA"
     UK = "UK"
     XK = "XK"
-
-
-
