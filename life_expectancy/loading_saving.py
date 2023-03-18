@@ -2,8 +2,8 @@
 from pathlib import Path
 import os
 import zipfile
-import pandas as pd
 from functools import partial
+import pandas as pd
 
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
