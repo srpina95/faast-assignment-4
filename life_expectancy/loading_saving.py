@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import zipfile
 import pandas as pd
+from functools import partial
 
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
@@ -20,10 +21,13 @@ def load_data(file_path: Path):
     if filetype == "zip":
         file_path, filetype = unzipper(file_path)
 
-    if filetype in("csv", "tsv"):
-        loaded_dataframe = pd.read_csv(file_path, sep="\t")
-    elif filetype == "json":
-        loaded_dataframe = pd.read_json(file_path)
+    load_function_to_apply = {
+        "csv": partial(pd.read_csv, sep=","),
+        "tsv": partial(pd.read_csv, sep="\t"),
+        "json": pd.read_json
+    }
+
+    loaded_dataframe = load_function_to_apply[filetype](file_path)
 
     return loaded_dataframe, filetype
 

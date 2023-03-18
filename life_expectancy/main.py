@@ -16,10 +16,15 @@ CURRENT_FILEPATH = Path(__file__).parent.resolve()
 def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"]) -> pd.DataFrame:
     """main function: ....."""
     life_expectancy_raw, filetype = load_data(input_data_path)
-    if filetype in ("csv", "tsv"):
-        life_expectancy_filtered = clean_data_csv(life_expectancy_raw, country=country.value)
-    elif filetype == "json":
-        life_expectancy_filtered = clean_data_json(life_expectancy_raw, country=country.value)
+    
+    clean_function_to_apply = {
+    "csv": clean_data_csv,
+    "tsv": clean_data_csv,
+    "json": clean_data_json
+    }
+
+    life_expectancy_filtered = clean_function_to_apply[filetype](life_expectancy_raw, country=country.value)
+
     return save_data(life_expectancy_filtered, output_data_path)
 
 
