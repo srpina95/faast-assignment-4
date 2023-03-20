@@ -32,3 +32,8 @@ def input_dataframe_test_csv() -> pd.DataFrame:
 def input_dataframe_test_json() -> pd.DataFrame:
     """Fixture to load the input of the cleaning script for a json file"""
     return pd.read_json(FIXTURES_DIR / "eurostat_life_expect.json")
+
+@pytest.fixture(scope="session")
+def output_expected_country_list() -> pd.DataFrame:
+    """Fixture to load the input of the cleaning script for a json file"""
+    return pd.read_csv(FIXTURES_DIR / "country_list_expected.csv").iloc[:,0].values.tolist()

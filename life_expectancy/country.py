@@ -59,3 +59,15 @@ class Country(str, Enum):
     UA = "UA"
     UK = "UK"
     XK = "XK"
+
+    @classmethod
+    def clean_countries_list(cls):
+        """
+        Function that returns a list with only the valid names of countries from the defined list
+        """
+        country_list = [country.value for country in Country]
+        for i, country in enumerate(country_list):
+            country_list[i] = country_list[i][0:2]
+        country_list = list(dict.fromkeys(country_list))
+
+        return country_list

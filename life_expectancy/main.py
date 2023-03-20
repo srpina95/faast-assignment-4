@@ -9,13 +9,12 @@ from life_expectancy.data_cleaning import clean_data_csv, clean_data_json
 from life_expectancy.country import Country
 
 
-
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
 clean_function_to_apply = {
-    "csv": clean_data_csv,
-    "tsv": clean_data_csv,
-    "json": clean_data_json
+    ".csv": clean_data_csv,
+    ".tsv": clean_data_csv,
+    ".json": clean_data_json
     }
 
 def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"])\
@@ -47,21 +46,22 @@ if __name__ == "__main__":  # pragma: no cover
     )
     parser.add_argument(
         "--input_file_name",
-        type=str,
-        required=True,
+        type=Path,
+        required=False,
         help="file name of the input file",
     )
     parser.add_argument(
         "--output_file_name",
-        type=str,
+        type=Path,
         required=False,
         default="eu_life_expectancy_cleaned.csv",
         help="file name of the output file",
     )
     args = parser.parse_args()
 
-    input_data_path = CURRENT_FILEPATH / "data" / args.input_file_name
+    #input_data_path = CURRENT_FILEPATH / "data" / args.input_file_name
     output_data_path = CURRENT_FILEPATH / "data" / args.output_file_name
 
     #main(input_data_path, output_data_path, args.country)
-    main("life_expectancy/data/eurostat_life_expect.zip", output_data_path, Country[args.country])
+    main(Path("life_expectancy/data/eurostat_life_expect.zip"), \
+         output_data_path, Country[args.country])
