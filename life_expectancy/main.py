@@ -12,17 +12,23 @@ from life_expectancy.country import Country
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
-
-def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"])\
-    -> pd.DataFrame:
-    """main function: ....."""
-    life_expectancy_raw, filetype = load_data(input_data_path)
-
-    clean_function_to_apply = {
+clean_function_to_apply = {
     "csv": clean_data_csv,
     "tsv": clean_data_csv,
     "json": clean_data_json
     }
+
+def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"])\
+    -> pd.DataFrame:
+    """main function that reads an inout file, cleans and saves it:
+
+    param: file_path: Path to the input file
+    (currently accepts files of type tsv, csv and json. The file can be compressed.)
+
+    output: file_path:  filepath of the file cleaned dataframe saved as a csv
+    """
+    life_expectancy_raw, filetype = load_data(input_data_path)
+
 
     life_expectancy_filtered = clean_function_to_apply[filetype]\
         (life_expectancy_raw, country=country.value)
@@ -42,8 +48,7 @@ if __name__ == "__main__":  # pragma: no cover
     parser.add_argument(
         "--input_file_name",
         type=str,
-        required=False,
-        default="eu_life_expectancy_raw.tsv",
+        required=True,
         help="file name of the input file",
     )
     parser.add_argument(
