@@ -26,8 +26,8 @@ def main(input_data_path: Path, output_data_path: Path, country: Country = Count
 
     output: file_path:  filepath of the file cleaned dataframe saved as a csv
     """
+    Country.clean_countries_list()
     life_expectancy_raw, filetype = load_data(input_data_path)
-
 
     life_expectancy_filtered = clean_function_to_apply[filetype]\
         (life_expectancy_raw, country=country.value)

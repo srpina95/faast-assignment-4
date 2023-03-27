@@ -35,5 +35,5 @@ def input_dataframe_test_json() -> pd.DataFrame:
 
 @pytest.fixture(scope="session")
 def output_expected_country_list() -> pd.DataFrame:
-    """Fixture to load the input of the cleaning script for a json file"""
+    """Fixture to loads the expected correct list of the input countries"""
     return pd.read_csv(FIXTURES_DIR / "country_list_expected.csv").iloc[:,0].values.tolist()
