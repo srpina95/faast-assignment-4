@@ -5,19 +5,35 @@ import argparse
 import pandas as pd
 
 from life_expectancy.loading_saving import save_data, load_data
-from .data_cleaning import clean_data
+from life_expectancy.data_cleaning import clean_data_csv, clean_data_json
+from life_expectancy.country import Country
+
 
 CURRENT_FILEPATH = Path(__file__).parent.resolve()
 
+clean_function_to_apply = {
+    ".csv": clean_data_csv,
+    ".tsv": clean_data_csv,
+    ".json": clean_data_json
+    }
 
-def main(input_data_path: Path, output_data_path: Path, country: str) -> pd.DataFrame:
-    """main function: ....."""
-    eu_life_expectancy_raw = load_data(input_data_path)
-    eu_life_expectancy_filtered = clean_data(eu_life_expectancy_raw, country=country)
-    save_data(eu_life_expectancy_filtered, output_data_path)
+def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"])\
+    -> pd.DataFrame:
+    """main function that reads an inout file, cleans and saves it:
 
-    
-    return eu_life_expectancy_filtered
+    param: file_path: Path to the input file
+    (currently accepts files of type tsv, csv and json. The file can be compressed.)
+
+    output: file_path:  filepath of the file cleaned dataframe saved as a csv
+    """
+    Country.clean_countries_list()
+    life_expectancy_raw, filetype = load_data(input_data_path)
+
+    life_expectancy_filtered = clean_function_to_apply[filetype]\
+        (life_expectancy_raw, country=country.value)
+
+    return save_data(life_expectancy_filtered, output_data_path)
+
 
 if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser(description="main function for your library")
@@ -30,21 +46,22 @@ if __name__ == "__main__":  # pragma: no cover
     )
     parser.add_argument(
         "--input_file_name",
-        type=str,
+        type=Path,
         required=False,
-        default="eu_life_expectancy_raw.tsv",
         help="file name of the input file",
     )
     parser.add_argument(
         "--output_file_name",
-        type=str,
+        type=Path,
         required=False,
         default="eu_life_expectancy_cleaned.csv",
         help="file name of the output file",
     )
     args = parser.parse_args()
 
-    input_data_path = CURRENT_FILEPATH / "data" / args.input_file_name
+    #input_data_path = CURRENT_FILEPATH / "data" / args.input_file_name
     output_data_path = CURRENT_FILEPATH / "data" / args.output_file_name
 
-    main(input_data_path, output_data_path, args.country)
+    #main(input_data_path, output_data_path, args.country)
+    main(Path("life_expectancy/data/eurostat_life_expect.zip"), \
+         output_data_path, Country[args.country])
