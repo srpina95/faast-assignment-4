@@ -17,13 +17,23 @@ clean_function_to_apply = {
     ".json": clean_data_json
     }
 
-def main(input_data_path: Path, output_data_path: Path, country: str) -> pd.DataFrame:
-    """main function: ....."""
-    eu_life_expectancy_raw = load_data(input_data_path)
-    eu_life_expectancy_filtered = clean_data(eu_life_expectancy_raw, country=country)
-    save_data(eu_life_expectancy_filtered, output_data_path)
-    
-    return eu_life_expectancy_filtered
+def main(input_data_path: Path, output_data_path: Path, country: Country = Country["PT"])\
+    -> pd.DataFrame:
+    """main function that reads an inout file, cleans and saves it:
+
+    param: file_path: Path to the input file
+    (currently accepts files of type tsv, csv and json. The file can be compressed.)
+
+    output: file_path:  filepath of the file cleaned dataframe saved as a csv
+    """
+    Country.clean_countries_list()
+    life_expectancy_raw, filetype = load_data(input_data_path)
+
+    life_expectancy_filtered = clean_function_to_apply[filetype]\
+        (life_expectancy_raw, country=country.value)
+
+    return save_data(life_expectancy_filtered, output_data_path)
+
 
 if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser(description="main function for your library")
